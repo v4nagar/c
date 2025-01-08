@@ -1,0 +1,123 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+body {
+  position: relative;
+}
+.fontsize {
+  font-size: 16px;
+}
+.mlv_loading_btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+#site-content {
+  padding: 50px 0px;
+}
+
+#site-content > article > header {
+  display: none;
+}
+.site-main, .entry-content {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+#save_degree_form input[type="number"],
+#save_tc_cc_form input[type="number"],
+#save_studing_form input[type="number"],
+#save_cdc_form input[type="number"],
+input[type="email"],
+input[type="text"],
+input[type="date"] {
+  width: 100%;
+}
+
+.bt_border_bottom {
+  border-bottom: 1px dotted black;
+}
+
+.MLV_gobv_form {
+  max-width: 21cm;
+  margin: auto;
+  border: 1px solid;
+  padding: 10px;
+
+}
+
+/* for QR code image position */
+.form_heading {
+  position: relative;
+}
+.form_QR_code {
+  /* position: absolute; */
+  text-align: center;
+  top: 0;
+  right: 0;
+}
+
+.bt_form_heading{
+  text-align: center;
+  font-size: 24px !important;
+}
+th, td {
+  padding: 0px 5px !important;
+  border: 1px solid black;
+}
+
+/* while printing the page */
+@media print {
+  body {
+    margin-top: 0mm; margin-bottom: 0mm; 
+    margin-left: 0mm; margin-right: 0mm
+  }
+  @page {
+    margin: 0;
+    padding: 0;
+  }
+  .fontsize {
+    font-size: 12px;
+  }
+  #site-content {
+    padding: 0px;
+  }
+  .entry-content h2, .entry-content h3 {
+    margin: 0rem auto 3rem !important;
+  }
+  .woocommerce-order {
+    padding: 0px !important;
+    margin: 0px !important;
+  }
+  th, td {
+    padding: 0px 5px !important;
+    border: 1px solid black;
+  }
+  .woocommerce-order button,
+  header,
+  footer,
+  .fl-page-footer-text,
+  .woocommerce-order > p:last-of-type {
+    display: none;
+  }
+  .entry-content p {
+    margin-bottom: 10px;
+  }
+  .MLV_gobv_form {
+    border: 0px solid;
+    padding: 0px;
+  
+  }
+}
+.academic_record_table th{
+    font-size:14px;
+}
+.academic_record_table input{
+    padding:1px !important;
+}
+.woocommerce-checkout .entry-title{
+	display:none;
+}
