@@ -162,7 +162,8 @@ class Form {
 		$this->loader->add_action('init',$plugin_admin,'fee_portal_handler');
 		$this->loader->add_filter( 'manage_woocommerce_page_wc-orders_columns', $plugin_admin, 'custom_shop_order_column' );
 		$this->loader->add_action( 'manage_woocommerce_page_wc-orders_custom_column', $plugin_admin, 'custom_orders_list_column_content_hpos', 20, 2);
-
+		$this->loader->add_action('woocommerce_order_list_table_restrict_manage_orders',$plugin_admin, 'rudr_order_filter', 25, 2);
+		$this->loader->add_action('woocommerce_order_list_table_prepare_items_query_args',$plugin_admin, 'add_filter_in_order_list');
 	}
 
 	/**
@@ -199,7 +200,7 @@ class Form {
 
 		$this->loader->add_action( 'woocommerce_thankyou', $plugin_public, 'bbloomer_add_content_thankyou' );
 		$this->loader->add_action( 'woocommerce_locate_template', $plugin_public, 'intercept_wc_template' ,99,3);
-		$this->loader->add_action('woocommerce_new_order',$plugin_public, 'update_tc_cc_serial_number', 10, 1);
+		// $this->loader->add_action('woocommerce_new_order',$plugin_public, 'update_tc_cc_serial_number', 10, 1);
 
 		// do_action( 'wp_body_open' )
 
@@ -244,5 +245,38 @@ class Form {
 	public function get_version() {
 		return $this->version;
 	}
+
+	public static function college_update_order_meta($order_id, $meta_key, $meta_value) {
+		// Get the order object
+		$order = wc_get_order($order_id);
+	
+		if ($order) {
+			// Update the meta data
+			$order->update_meta_data($meta_key, $meta_value);
+	
+			// Save the order to persist the changes
+			$order->save();
+		} else {
+			// Handle the case where the order is not found
+			//error_log("Order not found: " . $order_id);
+		}
+	}
+
+	public static function college_get_order_meta($order_id, $meta_key = false) {
+		// Get the order object
+		$order = wc_get_order($order_id);
+		if ($order) {
+			// Get the meta data
+			$meta_value = $order->get_meta($meta_key);
+	
+			return $meta_value;
+		} else {
+			// Handle the case where the order is not found
+			error_log("Order not found: " . $order_id);
+			return null;
+		}
+	}
+
+
 
 }

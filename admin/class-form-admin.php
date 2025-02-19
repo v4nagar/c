@@ -207,7 +207,7 @@ class Form_Admin {
 				'fee'            => $fee,
 			];
 
-        //echo json_encode($fee_portal_setting); exit;
+        // echo json_encode($fee_portal_setting); exit;
 			
 
 		update_option('fee_portal_settings',$fee_portal_setting);
@@ -499,29 +499,30 @@ class Form_Admin {
 
 	public function fee_portal_handler(){
 		$value = get_option('fee_portal_settings');
-		//echo json_encode($value); exit;
+		// echo json_encode($value); exit;
 		define( 'MLV_FORMS_ARRAY', $value['fee']);
 
 
 		if (isset($_GET["download_form"]) && isset($_GET["order_id"]) && isset($_GET["type"])) {
+			// var_dump($_GET["order_id"]); die;
 			$from_data = get_post_meta($_GET["order_id"])['form_data'];
 			$from_data = unserialize($from_data[0]);
 			$order_id = sanitize_text_field($_GET["order_id"]);
 			$type = sanitize_text_field($_GET["type"]);
 
-			$tc_sno = get_post_meta($order_id, 'tc_form_serial_number',true);
-			$cc_sno = get_post_meta($order_id, 'cc_form_serial_number',true);
+			$tc_sno = Form::college_get_order_meta($order_id, 'tc_form_serial_number',true);
+			$cc_sno = Form::college_get_order_meta($order_id, 'cc_form_serial_number',true);
 			
-			$tc_cc_count = get_post_meta($order_id, 'tc_cc_count',true);
+			$tc_cc_count = Form::college_get_order_meta($order_id, 'tc_cc_count',true);
 			$tc_cc_count++;
-			$cc_count = get_post_meta($order_id, 'cc_count',true);
+			$cc_count = Form::college_get_order_meta($order_id, 'cc_count',true);
 			$cc_count++;
 		
 			if($type=="cc"){
 				include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/print-cc-form-templet.php';
-				$count = update_post_meta($order_id, 'cc_count',$cc_count);
+				$count = Form::college_update_order_meta($order_id, 'cc_count',$cc_count);
 			}elseif($type=="tc_cc"){
-				$tc_cc_count = update_post_meta($order_id, 'tc_cc_count',$tc_cc_count);
+				$tc_cc_count = Form::college_update_order_meta($order_id, 'tc_cc_count',$tc_cc_count);
 				include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/print-tc-cc-form-templet.php';
 			}
 		}
@@ -543,12 +544,12 @@ class Form_Admin {
 	public function custom_metabox_form() {
 
 		$post_id = isset($_GET['id']) ? $_GET['id'] : false;
-		$form_name=get_post_meta($post_id, 'form_name',true);
+		$form_name=Form::college_get_order_meta($post_id, 'form_name',true);
 		//echo ($form_name);
 
 		if($form_name =="degree_form"){
 			
-			$form_data = get_post_meta($post_id, "form_data", true);
+			$form_data = Form::college_get_order_meta($post_id, "form_data", true);
 			//echo json_encode($form_data);
 			$radio=$form_data['student'];
 			echo ($radio);
@@ -753,7 +754,7 @@ class Form_Admin {
 
 		else if($form_name =="tt_cc_form"){
 
-			$form_data = get_post_meta($post_id, "form_data", true);
+			$form_data = Form::college_get_order_meta($post_id, "form_data", true);
 
 
 			?>
@@ -995,7 +996,7 @@ class Form_Admin {
 
 		else if($form_name =="studying_certificate_form"){
 
-			$form_data = get_post_meta($post_id, "form_data", true);
+			$form_data = Form::college_get_order_meta($post_id, "form_data", true);
 
 
 			?>
@@ -1243,7 +1244,7 @@ class Form_Admin {
 
 		else if($form_name =="cdc_fee_form"){
 
-			$form_data = get_post_meta($post_id, "form_data", true);
+			$form_data = Form::college_get_order_meta($post_id, "form_data", true);
 
 
 			?>
@@ -1435,7 +1436,7 @@ class Form_Admin {
 
 		else if($form_name =="cdc_fee_geography_form"){
 
-			$form_data = get_post_meta($post_id, "form_data", true);
+			$form_data = Form::college_get_order_meta($post_id, "form_data", true);
 
 
 			?>
@@ -1652,6 +1653,38 @@ class Form_Admin {
 					
 					break;
 			}
+		}
+
+
+		public function rudr_order_filter($post_type, $which) {
+			if ('shop_order' !== $post_type) {
+				return;
+			}
+
+			// Get the selected filter value from the query form_name
+			$form_name = isset($_GET['form_name']) ? sanitize_text_field($_GET['form_name']) : '';
+			?>
+			<select name="form_name">
+				<option value=""><?php esc_html_e('Select', 'textdomain'); ?></option>
+				<option value="tt_cc_form" <?php selected($form_name, 'tt_cc_form'); ?>>
+					<?php esc_html_e('TC and CC', 'textdomain'); ?>
+				</option>
+			</select>
+			<?php
+		}
+
+		public function add_filter_in_order_list($query_args) {
+			if (isset($_GET['form_name']) && !empty($_GET['form_name'])) {
+				$query_args['meta_query'][] = array(
+					'key'     => 'form_name',
+					'value'   => sanitize_text_field($_GET['form_name']),
+					'compare' => 'LIKE'
+				);
+		// 			echo "<pre>"; print_r($query_args); die;
+
+			}
+
+			return $query_args;
 		}
 		
 }

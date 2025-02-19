@@ -5,21 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>चरित्र प्रमाण पत्र</title>
     <style>
-        @media print {
-            .print-button {
-                display: none;
-            }
-        }
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
 
         .certificate {
             width: 210mm; /* A4 width */
-            height: 297mm; /* A4 height */
+            height: 260mm; /* A4 height */
             margin: 0 auto;
             padding: 40px 50px;
             box-sizing: border-box;
@@ -96,6 +86,11 @@
         .print-button button:hover {
             background-color: #0056b3;
         }
+        @media print {
+            .print-button {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -105,20 +100,18 @@
 
     <div class="certificate">
     <div class="header">
-        <h1>Maharana Pratap</h1>
-        <h2>Government Postgraduate College</h2>
+    <h1>Maharana Pratap Government Post Graduate College</h1>
         <h3>Chittorgarh (Raj.)</h3>
         <h3>Accredited 'A' Grade by NAAC</h3>
         <h3>Character Certificate</h3>
     </div>
 <?php
   $date          = date('d-m-y'); 
-  $serial_no     = 1;
-  $class_name    = 12;
+  $serial_no     = $order_id;
   $name          = $from_data['name'];
   $perent_name   = $from_data['father'];
   $mother        = $from_data['mother'];
-  $faculty       = $from_data['faculty'];
+  $class_name       = $from_data['faculty'];
   $d_admission   = $from_data['d_admission'];
   $d_exam        = $from_data['d_exam'];
   $dob           = $from_data['dob'];

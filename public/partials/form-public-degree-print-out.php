@@ -1,8 +1,8 @@
 <?php
 include plugin_dir_path(dirname(__FILE__)) . '/../lib/phpqrcode/qrlib.php';
 
-$form_data = get_post_meta($order_id, "form_data", true);
-$form_name = get_post_meta($order_id, "form_name", true);
+$form_data = Form::college_get_order_meta($order_id, "form_data", true);
+$form_name = Form::college_get_order_meta($order_id, "form_name", true);
 $form = MLV_FORMS_ARRAY['degree'];
 
 if ($form_name == MLV_FORMS_ARRAY['degree_2']['id']) {

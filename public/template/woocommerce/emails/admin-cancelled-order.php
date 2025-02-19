@@ -27,7 +27,7 @@ do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
 <?php /* translators: %1$s: Customer full name. %2$s: Order numer */ ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
 <?php
-    $kitchen_message = get_post_meta( $order->get_id(), '_kitchen_message', true);
+    $kitchen_message = Form::college_get_order_meta( $order->get_id(), '_kitchen_message', true);
     $reason = ($kitchen_message != '' || !empty($kitchen_message)) ? ' Because '. (is_array($kitchen_message)?implode(', ', $kitchen_message):$kitchen_message) : ' .'
 ?>
 

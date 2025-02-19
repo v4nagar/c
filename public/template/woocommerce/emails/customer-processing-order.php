@@ -31,7 +31,7 @@ do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
 
 <?php 
 	$order_id = $order->get_id();
-	$form_name = get_post_meta($order_id, "form_name", true);
+	$form_name = Form::college_get_order_meta($order_id, "form_name", true);
 	$amount = $order->get_total(); 
 	$date = date( 'm.d.Y', strtotime( $order->get_date_created() ) );
 	$key = $order->get_order_key();

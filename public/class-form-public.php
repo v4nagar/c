@@ -367,7 +367,7 @@ class Form_Public
 
 		if(isset($_POST['data']) && isset($_POST['data']['order_id'])){
 			$form_data = $_POST['data'];
-			update_post_meta($_POST['data']['order_id'], 'form_data', $form_data);
+			Form::college_update_order_meta($_POST['data']['order_id'], 'form_data', $form_data);
 			$resp = array(
 				"redirect_url" =>"",
 				"status" => true,
@@ -429,8 +429,8 @@ class Form_Public
 
 			$order->save();
 
-			update_post_meta($order->get_id(), 'form_data', $form_data);
-			update_post_meta($order->get_id(), 'form_name', $form['id']);
+			Form::college_update_order_meta($order->get_id(), 'form_data', $form_data);
+			Form::college_update_order_meta($order->get_id(), 'form_name', $form['id']);
 
 			$resp = array(
 				"redirect_url" => $order->get_checkout_payment_url(),
@@ -447,6 +447,7 @@ class Form_Public
 	public function send_tc_cc_form_data()
 	{
 		$form = MLV_FORMS_ARRAY['tt_cc'];
+		// echo "<pre>"; print_r($form); die;
 		$resp = array(
 			"redirect_url" => "",
 			"status" => false,
@@ -468,7 +469,7 @@ class Form_Public
 
 		if(isset($_POST['data']) && isset($_POST['data']['order_id'])){
 			$form_data = $_POST['data'];
-			update_post_meta($_POST['data']['order_id'], 'form_data', $form_data);
+			Form::college_update_order_meta($_POST['data']['order_id'], 'form_data', $form_data);
 			$resp = array(
 				"redirect_url" =>"",
 				"status" => true,
@@ -512,8 +513,9 @@ class Form_Public
 
 			$order->save();
 
-			update_post_meta($order->get_id(), 'form_data', $form_data);
-			update_post_meta($order->get_id(), 'form_name', $form['id']);
+			Form::college_update_order_meta($order->get_id(), 'form_data', $form_data);
+			Form::college_update_order_meta($order->get_id(), 'form_name', $form['id']);
+			$this->update_tc_cc_serial_number($order->get_id());
 
 			$resp = array(
 				"redirect_url" => $order->get_checkout_payment_url(),
@@ -551,7 +553,7 @@ class Form_Public
 
 		if(isset($_POST['data']) && isset($_POST['data']['order_id'])){
 			$form_data = $_POST['data'];
-			update_post_meta($_POST['data']['order_id'], 'form_data', $form_data);
+			Form::college_update_order_meta($_POST['data']['order_id'], 'form_data', $form_data);
 			$resp = array(
 				"redirect_url" =>"",
 				"status" => true,
@@ -595,8 +597,8 @@ class Form_Public
 
 			$order->save();
 
-			update_post_meta($order->get_id(), 'form_data', $form_data);
-			update_post_meta($order->get_id(), 'form_name', $form['id']);
+			Form::college_update_order_meta($order->get_id(), 'form_data', $form_data);
+			Form::college_update_order_meta($order->get_id(), 'form_name', $form['id']);
 
 			$resp = array(
 				"redirect_url" => $order->get_checkout_payment_url(),
@@ -634,7 +636,7 @@ class Form_Public
 
 		if(isset($_POST['data']) && isset($_POST['data']['order_id'])){
 			$form_data = $_POST['data'];
-			update_post_meta($_POST['data']['order_id'], 'form_data', $form_data);
+			Form::college_update_order_meta($_POST['data']['order_id'], 'form_data', $form_data);
 			$resp = array(
 				"redirect_url" =>"",
 				"status" => true,
@@ -677,8 +679,8 @@ class Form_Public
 
 			$order->save();
 
-			update_post_meta($order->get_id(), 'form_data', $form_data);
-			update_post_meta($order->get_id(), 'form_name', $form['id']);
+			Form::college_update_order_meta($order->get_id(), 'form_data', $form_data);
+			Form::college_update_order_meta($order->get_id(), 'form_name', $form['id']);
 
 			$resp = array(
 				"redirect_url" => $order->get_checkout_payment_url(),
@@ -714,7 +716,7 @@ class Form_Public
 
 		if(isset($_POST['data']) && isset($_POST['data']['order_id'])){
 			$form_data = $_POST['data'];
-			update_post_meta($_POST['data']['order_id'], 'form_data', $form_data);
+			Form::college_update_order_meta($_POST['data']['order_id'], 'form_data', $form_data);
 			$resp = array(
 				"redirect_url" =>"",
 				"status" => true,
@@ -758,8 +760,8 @@ class Form_Public
 
 			$order->save();
 
-			update_post_meta($order->get_id(), 'form_data', $form_data);
-			update_post_meta($order->get_id(), 'form_name', $form['id']);
+			Form::college_update_order_meta($order->get_id(), 'form_data', $form_data);
+			Form::college_update_order_meta($order->get_id(), 'form_name', $form['id']);
 
 			$resp = array(
 				"redirect_url" => $order->get_checkout_payment_url(),
@@ -779,8 +781,8 @@ class Form_Public
 		$order_status  = $order->get_status();
 		if($order_status!='processing' && $order_status!='completed') return;
 		wc_clear_notices();
-		$form_data = get_post_meta($order_id, "form_data", true);
-		$form_name = get_post_meta($order_id, "form_name", true);
+		$form_data = Form::college_get_order_meta($order_id, "form_data", true);
+		$form_name = Form::college_get_order_meta($order_id, "form_name", true);
 
 		if ($form_name == MLV_FORMS_ARRAY['degree']['id']) {
 			require_once plugin_dir_path(dirname(__FILE__)) . 'public/partials/form-public-degree-print-out.php';
@@ -804,7 +806,7 @@ class Form_Public
 
 	
 	public function update_tc_cc_serial_number($order_id) {
-		// update_post_meta( $order_id, 'tc_and_cc_filter_query', 'tc_cc_form' );
+		// Form::college_update_order_meta( $order_id, 'tc_and_cc_filter_query', 'tc_cc_form' );
 
 		$current_date = date('Ymd');
 		$cc_serial_number_array = get_option('college_cc_serial_nubmer_array', array());
@@ -844,8 +846,8 @@ class Form_Public
 					'order_id' => $order_id,
 					'sno' => $max_cc_sno + 1,
 				];
-				update_post_meta($order_id, 'tc_form_serial_number',$max_tc_sno+1);
-				update_post_meta($order_id, 'cc_form_serial_number',$max_cc_sno+1);
+				Form::college_update_order_meta($order_id, 'tc_form_serial_number',$max_tc_sno+1);
+				Form::college_update_order_meta($order_id, 'cc_form_serial_number',$max_cc_sno+1);
 			}
 		} else {
 			$cc_serial_number_array[$current_date] = [
@@ -862,8 +864,8 @@ class Form_Public
 					],
 				],
 			];
-			update_post_meta($order_id, 'tc_form_serial_number',1);
-			update_post_meta($order_id, 'cc_form_serial_number',1);
+			Form::college_update_order_meta($order_id, 'tc_form_serial_number',1);
+			Form::college_update_order_meta($order_id, 'cc_form_serial_number',1);
 		}
 		update_option('college_cc_serial_nubmer_array', $cc_serial_number_array);
 	}

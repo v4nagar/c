@@ -51,7 +51,7 @@ do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
 	$key = $order->get_order_key();
 	$url = site_url("/checkout/order-received/$order_id/?key=$key");
 
-    $form_name = get_post_meta($order_id, "form_name", true);
+    $form_name = Form::college_get_order_meta($order_id, "form_name", true);
 
 	if ($form_name == MLV_FORMS_ARRAY['degree']['id']) {
 		$form_name =  MLV_FORMS_ARRAY['degree']['title'];
